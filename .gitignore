@@ -1,0 +1,4 @@
+node_modules
+src/config/.env*
+prodErrors.log
+test01.json

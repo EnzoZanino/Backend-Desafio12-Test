@@ -1,0 +1,40 @@
+paths:
+  /api/users/{userId}:
+    get:
+      summary: Get a user by ID
+      tags:
+        - Users
+      parameters:
+        - name: userId
+          in: path
+          required: true
+          description: ID of the user to retrieve.
+          schema:
+            type: string
+      responses:
+        "200":
+          description: User retrieved successfully.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/User"
+        "401":
+          description: Not authorized to consume resource.
+        "500":
+          description: Server internal error.
+      security:
+        - userAuth: []
+      securitySchemes:
+        userAuth:
+          type: http
+          scheme: bearer
+          bearerFormat: JWT
+          description: JWT token obtained upon user authentication
+      description: |
+        This endpoint retrieves a user by their ID. The request must be made by an authenticated user with admin privileges.
+      x-codeSamples:
+        - lang: HTTP
+          source: |
+            # Example request with bearer token
+            curl -X GET "https://api.example.com/api/users/{userId}" \
+            -H "Authorization: Bearer <token>"

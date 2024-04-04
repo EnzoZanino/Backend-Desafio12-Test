@@ -1,0 +1,42 @@
+paths:
+  /api/carts/{cid}:
+    get:
+      summary: Obtain one cart by Id
+      tags:
+        - Carts
+      parameters:
+        - name: cid
+          in: path
+          required: true
+          description: Cart Id.
+          schema:
+            $type: String
+      responses:
+        "200":
+          description: Cart obtained from DB.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#components/schemas/Cart"
+        "401":
+          description: Not authorized to consume resourse.
+        "500":
+          description: Server internal error.
+      security:
+        - userAuth: []
+      securitySchemes:
+        userAuth:
+          type: http
+          scheme: bearer
+          bearerFormat: JWT
+          description: JWT token obtained upon user authentication.
+      description: |
+        This endpoint allows admin user to get one product from database.
+      x-codeSamples:
+        - lang: HTTP
+          source: |
+            # Example request with bearer token
+            curl -X GET "https://api.example.com/api/carts/{cid}" \
+            -H "Authorization: Bearer <token>"

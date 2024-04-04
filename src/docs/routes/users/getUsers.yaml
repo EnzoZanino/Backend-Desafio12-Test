@@ -1,0 +1,35 @@
+paths:
+  /api/users:
+    get:
+      summary: Get all users
+      tags:
+        - Users
+      responses:
+        "200":
+          description: List of users retrieved successfully.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/User"
+        "401":
+          description: Not authorized to consume resource.
+        "500":
+          description: Server internal error.
+      security:
+        - userAuth: []
+      securitySchemes:
+        userAuth:
+          type: http
+          scheme: bearer
+          bearerFormat: JWT
+          description: JWT token obtained upon user authentication
+      description: |
+        This endpoint retrieves a list of all users. The request must be made by an authenticated user with admin privileges.
+      x-codeSamples:
+        - lang: HTTP
+          source: |
+            # Example request with bearer token
+            curl -X GET "https://api.example.com/api/users" \
+            -H "Authorization: Bearer <token>"

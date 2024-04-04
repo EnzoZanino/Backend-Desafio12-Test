@@ -1,0 +1,36 @@
+paths:
+  /api/tickets/{ticketId}:
+    delete:
+      summary: Delete ticket by ID
+      tags:
+        - Tickets
+      parameters:
+        - name: ticketId
+          in: path
+          required: true
+          description: Ticket ID.
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Ticket deleted successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    description: Message confirming ticket deletion
+        "401":
+          description: Not authorized to consume resource.
+        "500":
+          description: Server internal error.
+      security:
+        - userAuth: []
+      securitySchemes:
+        userAuth:
+          type: http
+          scheme: bearer
+          bearerFormat: JWT
+          description: JWT token obtained upon user authentication

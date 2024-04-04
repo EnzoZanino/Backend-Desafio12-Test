@@ -1,0 +1,114 @@
+# Cart
+components:
+  schemas:
+    CartProduct:
+      type: object
+      properties:
+        productId:
+          type: string
+          description: ID of the product in the cart
+        quantity:
+          type: integer
+          description: Quantity of the product in the cart
+      required:
+        - productId
+        - quantity
+      example:
+        productId: "65f09c28320b0e9faff3b3b6"
+        quantity: 1
+
+    Cart:
+      type: object
+      properties:
+        userId:
+          type: string
+          description: Cart owner User Id
+        products:
+          type: array
+          description: Cart products array
+          items:
+            $ref: "#/components/schemas/CartProduct"
+      required:
+        - userId
+        - products
+      example:
+        userId: "65e741152102117d74c0ae79"
+        products:
+          - productId: "65f09c28320b0e9faff3b3b6"
+            quantity: 1
+
+    EmptyCart:
+      type: object
+      example: {}
+
+  requestBodies:
+    CartRequestBody:
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/Cart"
+      required: true
+      example:
+        userId: "65e741152102117d74c0ae79"
+        products:
+          - productId: "65f09c28320b0e9faff3b3b6"
+            quantity: 1
+
+    EmptyCartRequestBody:
+      content:
+        application/json:
+          schema:
+            $ref: "#components/shcemas/EmptyCart"
+      required: true
+      example: {}
+
+    CartProductRequestBody:
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/CartProduct"
+      required: true
+      example:
+        - productId: "65f09c28320b0e9faff3b3b6"
+          quantity: 1
+
+    ProductInCartRequestBody:
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/CartProduct"
+      required: true
+      example:
+        productId: "65f09c28320b0e9faff3b3b6"
+        quantity: 1
+
+    UpdateProductsInCartRequestBody:
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+              $ref: "#/components/schemas/CartProductUpdate"
+      required: true
+      description: Data of products to update in the cart.
+      example:
+        - productId: "65f09c28320b0e9faff3b3b6"
+          quantity: 2
+        - productId: "65f09c28320b0e9faff3b3b7"
+          quantity: 3
+
+    ProductQuantityUpdateRequestBody:
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              quantity:
+                type: integer
+                description: New quantity of the product in the cart
+            required:
+              - quantity
+      required: true
+      description: New quantity of the product to update in the cart.
+      example:
+        quantity: 5

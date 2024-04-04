@@ -1,0 +1,55 @@
+paths:
+  /api/products/:
+    post:
+      summary: Post product in DB
+      tags:
+        - Products
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#components/requestBodies/Product"
+      responses:
+        "200":
+          description: Product successfully created.
+          content:
+            application/json:
+              schema:
+                $ref: "#components/schemas/Product"
+        "401":
+          description: Not authorized to consume resource.
+        "400":
+          description: Invalid request body.
+        "500":
+          description: Server internal error.
+      security:
+        - userAuth: []
+      securitySchemes:
+        userAuth:
+          type: http
+          scheme: bearer
+          bearerFormat: JWT
+          description: JWT token obtained upon user authentication.
+      description: |
+        This endpoint allows authenticated users (admin or premium) to create a new product in the database.
+      x-codeSamples:
+        - lang: HTTP
+          source: |
+            # Example request with bearer token
+            curl -X POST "https://api.example.com/api/products/" \
+            -H "Authorization: Bearer <token>" \
+            -H "Content-Type: application/json" \
+            -d '{
+              "title": "New Product",
+              "description": "Description of the new product",
+              "code": "123456",
+              "price": 99.99,
+              "status": true,
+              "stock": 10,
+              "category": "Electronics",
+              "thumbnails": [
+                "https://example.com/image1.jpg",
+                "https://example.com/image2.jpg"
+              ]
+            }'

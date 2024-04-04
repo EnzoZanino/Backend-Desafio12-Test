@@ -1,0 +1,44 @@
+paths:
+  /api/products/{pid}:
+    delete:
+      summary: Delete product from DB
+      tags:
+        - Products
+      parameters:
+        - name: pid
+          in: path
+          required: true
+          description: Product Id.
+          schema:
+            $type: String
+      responses:
+        "200":
+          description: Product deleted from DB.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#components/schemas/Product"
+        "401":
+          description: Not authorized to consume resourse.
+        "404":
+          description: Product not found.
+        "500":
+          description: Server internal error.
+      security:
+        - userAuth: []
+      securitySchemes:
+        userAuth:
+          type: http
+          scheme: bearer
+          bearerFormat: JWT
+          description: JWT token obtained upon user authentication
+      description: |
+        This endpoint requires user authentication. The user performing the delete must have the appropiate permissions. The product owner or an admin user are allowed to update a product.
+      x-codeSamples:
+        - lang: HTTP
+          source: |
+            # Example request with bearer token
+            curl -X DELETE "https://api.example.com/api/products/{pid}" \
+            -H "Authorization: Bearer <token>"

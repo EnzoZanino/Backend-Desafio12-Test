@@ -1,0 +1,28 @@
+paths:
+  /api/tickets:
+    get:
+      summary: Get all tickets
+      tags:
+        - Tickets
+      parameters: []
+      responses:
+        "200":
+          description: Successfully retrieved all tickets
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Ticket"
+        "401":
+          description: Not authorized to consume resource.
+        "500":
+          description: Server internal error.
+      security:
+        - userAuth: []
+      securitySchemes:
+        userAuth:
+          type: http
+          scheme: bearer
+          bearerFormat: JWT
+          description: JWT token obtained upon user authentication

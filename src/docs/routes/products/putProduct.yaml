@@ -1,0 +1,54 @@
+paths:
+  /api/products/{pid}:
+    put:
+      summary: Update product date by providing Id & data
+      tags:
+        - Products
+      parameters:
+        - name: pid
+          in: path
+          required: true
+          description: Product Id.
+          schema:
+            $type: String
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#components/requestBodies/NewProduct"
+      responses:
+        "200":
+          description: Product updated in DB.
+          content:
+            application/json:
+              schema:
+                type: object
+                items:
+                  $ref: "#components/schemas/Product"
+        "401":
+          description: Not authorized to consume resourse.
+        "500":
+          description: Server internal error.
+      security:
+        - userAuth: []
+      securitySchemes:
+        userAuth:
+          type: http
+          scheme: bearer
+          bearerFormat: JWT
+          description: JWT token obtained upon user authentication
+      description: |
+        This endpoint requires user authentication. The user performing the update must have the appropiate permissions. The product owner or an admin user are allowed to update a product.
+      x-codeSamples:
+        - lang: HTTP
+          source: |
+            # Example request with bearer token
+            curl -X PUT "https://api.example.com/api/products/{pid}" \
+            -H "Authorization: Bearer <token>" \
+            -H "Content-Type: application/json" \
+            -d '{
+              "title": "New Title",
+              "description": "New Description",
+              ...
+            }'

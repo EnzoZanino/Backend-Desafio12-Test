@@ -1,0 +1,46 @@
+paths:
+  /api/carts/{cid}/products/{pid}:
+    delete:
+      summary: Delete a product from a cart by providing cart and product Ids
+      tags:
+        - Carts
+      parameters:
+        - name: cid
+          in: path
+          required: true
+          description: Cart Id.
+          schema:
+            type: string
+        - name: pid
+          in: path
+          required: true
+          description: Product Id.
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Product deleted from the cart successfully.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Cart"
+        "401":
+          description: Not authorized to consume resource.
+        "500":
+          description: Server internal error.
+      security:
+        - userAuth: []
+      securitySchemes:
+        userAuth:
+          type: http
+          scheme: bearer
+          bearerFormat: JWT
+          description: JWT token obtained upon user authentication
+      description: |
+        This endpoint allows users with roles "user" or "premium" to delete a product from a cart by providing the cart and product Ids.
+      x-codeSamples:
+        - lang: HTTP
+          source: |
+            # Example request with bearer token
+            curl -X DELETE "https://api.example.com/api/carts/{cid}/products/{pid}" \
+            -H "Authorization: Bearer <token>"

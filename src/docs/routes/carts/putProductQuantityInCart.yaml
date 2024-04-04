@@ -1,0 +1,56 @@
+paths:
+  /api/carts/{cid}/products/{pid}:
+    put:
+      summary: Update quantity of a product in the cart
+      tags:
+        - Carts
+      parameters:
+        - name: cid
+          in: path
+          required: true
+          description: Cart Id.
+          schema:
+            type: string
+        - name: pid
+          in: path
+          required: true
+          description: Product Id.
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/requestBodies/ProductQuantityUpdateRequestBody"
+      responses:
+        "200":
+          description: Product quantity updated in the cart.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Cart"
+        "401":
+          description: Not authorized to consume resource.
+        "500":
+          description: Server internal error.
+      security:
+        - userAuth: []
+      securitySchemes:
+        userAuth:
+          type: http
+          scheme: bearer
+          bearerFormat: JWT
+          description: JWT token obtained upon user authentication
+      description: |
+        This endpoint requires user authentication. The user performing the update must have the appropriate permissions. Users with roles "user" or "premium" are allowed to update the quantity of a product in the cart.
+      x-codeSamples:
+        - lang: HTTP
+          source: |
+            # Example request with bearer token
+            curl -X PUT "https://api.example.com/api/carts/{cid}/products/{pid}" \
+            -H "Authorization: Bearer <token>" \
+            -H "Content-Type: application/json" \
+            -d '{
+              "quantity": 5
+            }'

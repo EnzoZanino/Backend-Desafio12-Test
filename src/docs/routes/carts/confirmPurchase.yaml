@@ -1,0 +1,40 @@
+paths:
+  /api/carts/{cid}/purchase:
+    post:
+      summary: Confirm purchase of a cart by providing its Id
+      tags:
+        - Carts
+      parameters:
+        - name: cid
+          in: path
+          required: true
+          description: Cart Id.
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Purchase confirmed successfully.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Cart"
+        "401":
+          description: Not authorized to consume resource.
+        "500":
+          description: Server internal error.
+      security:
+        - userAuth: []
+      securitySchemes:
+        userAuth:
+          type: http
+          scheme: bearer
+          bearerFormat: JWT
+          description: JWT token obtained upon user authentication
+      description: |
+        This endpoint allows a user to confirm the purchase of a cart by providing its Id. The user must be authenticated and have the role "user".
+      x-codeSamples:
+        - lang: HTTP
+          source: |
+            # Example request with bearer token
+            curl -X POST "https://api.example.com/api/carts/{cid}/purchase" \
+            -H "Authorization: Bearer <token>"

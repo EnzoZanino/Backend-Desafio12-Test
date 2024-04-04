@@ -1,0 +1,32 @@
+paths:
+  /api/tickets/{ticketId}:
+    get:
+      summary: Get ticket by ID
+      tags:
+        - Tickets
+      parameters:
+        - name: ticketId
+          in: path
+          required: true
+          description: Ticket ID.
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Successfully retrieved ticket
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Ticket"
+        "401":
+          description: Not authorized to consume resource.
+        "500":
+          description: Server internal error.
+      security:
+        - userAuth: []
+      securitySchemes:
+        userAuth:
+          type: http
+          scheme: bearer
+          bearerFormat: JWT
+          description: JWT token obtained upon user authentication

@@ -1,0 +1,40 @@
+paths:
+  /api/users/premium/{uid}:
+    put:
+      summary: Change user role to premium
+      tags:
+        - Users
+      parameters:
+        - name: uid
+          in: path
+          required: true
+          description: ID of the user to change role to premium.
+          schema:
+            type: string
+      responses:
+        "200":
+          description: User role changed to premium successfully.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/User"
+        "401":
+          description: Not authorized to consume resource.
+        "500":
+          description: Server internal error.
+      security:
+        - userAuth: []
+      securitySchemes:
+        userAuth:
+          type: http
+          scheme: bearer
+          bearerFormat: JWT
+          description: JWT token obtained upon user authentication
+      description: |
+        This endpoint changes the role of a user to premium. The request must be made by an authenticated user with admin privileges.
+      x-codeSamples:
+        - lang: HTTP
+          source: |
+            # Example request with bearer token
+            curl -X PUT "https://api.example.com/api/users/premium/{uid}" \
+            -H "Authorization: Bearer <token>"

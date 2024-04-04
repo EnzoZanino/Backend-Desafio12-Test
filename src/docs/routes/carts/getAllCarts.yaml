@@ -1,0 +1,33 @@
+paths:
+  /api/carts:
+    get:
+      summary: Obtain all carts
+      tags:
+        - Carts
+      responses:
+        "200":
+          description: Obtein all carts in DB.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#components/schemas/Cart"
+        "500":
+          description: Server internal error.
+      security:
+        - userAuth: []
+      securitySchemes:
+        userAuth:
+          type: http
+          scheme: bearer
+          bearerFormat: JWT
+          description: JWT token obtained upon user authentication.
+      description: |
+        This endpoint allows admin user to get all carts from database.
+      x-codeSamples:
+        - lang: HTTP
+          source: |
+            # Example request with bearer token
+            curl -X GET "https://api.example.com/api/carts" \
+            -H "Authorization: Bearer <token>"

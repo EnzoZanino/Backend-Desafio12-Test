@@ -1,0 +1,17 @@
+paths:
+  /api/products/mockingproducts:
+    get:
+      summary: Obtain mocking products
+      tags:
+        - Products
+      responses:
+        "200":
+          description: Mocking products created through faker.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#components/schemas/Product"
+        "500":
+          description: Server internal error.

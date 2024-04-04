@@ -1,0 +1,42 @@
+paths:
+  /api/products/product/{pid}:
+    get:
+      summary: Obtain one product by Id
+      tags:
+        - Products
+      parameters:
+        - name: pid
+          in: path
+          required: true
+          description: Product Id.
+          schema:
+            $type: String
+      responses:
+        "200":
+          description: Product obtained from DB.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#components/schemas/Product"
+        "401":
+          description: Not authorized to consume resourse.
+        "500":
+          description: Server internal error.
+      security:
+        - userAuth: []
+      securitySchemes:
+        userAuth:
+          type: http
+          scheme: bearer
+          bearerFormat: JWT
+          description: JWT token obtained upon user authentication.
+      description: |
+        This endpoint allows admin user to get one product from database.
+      x-codeSamples:
+        - lang: HTTP
+          source: |
+            # Example request with bearer token
+            curl -X GET "https://api.example.com/api/products/product/{pid}" \
+            -H "Authorization: Bearer <token>"

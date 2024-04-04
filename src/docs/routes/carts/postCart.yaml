@@ -1,0 +1,56 @@
+paths:
+  /api/carts/{uid}:
+    post:
+      summary: Post cart in DB
+      tags:
+        - Carts
+      parameters:
+        - name: uid
+          in: path
+          required: true
+          description: User Id.
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#components/requestBodies/EmptyCartRequestBody"
+      responses:
+        "200":
+          description: Cart successfully created.
+          content:
+            application/json:
+              schema:
+                $ref: "#components/schemas/EmptyCart"
+        "401":
+          description: Not authorized to consume resource.
+        "400":
+          description: Invalid request body.
+        "500":
+          description: Server internal error.
+      security:
+        - userAuth: []
+      securitySchemes:
+        userAuth:
+          type: http
+          scheme: bearer
+          bearerFormat: JWT
+          description: JWT token obtained upon user authentication.
+      description: |
+        This endpoint allows authenticated users (admin or premium) to create a new product in the database.
+      x-codeSamples:
+        - lang: HTTP
+          source: |
+            # Example request with bearer token
+            curl -X POST "https://api.example.com/api/carts/" \
+            -H "Authorization: Bearer <token>" \
+            -H "Content-Type: application/json" \
+            -d '{
+              "userId": "65f2e6279295f608f09f17bb",
+              "products": [
+                "productId": ObjectId('65f09c28320b0e9faff3b3b6'),
+                "quantity":1
+              ]
+            }'
